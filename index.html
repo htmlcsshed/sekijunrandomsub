@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランダム並べ替えプログラム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .student {
+            width: 100px;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .male {
+            background-color: #add8e6;
+        }
+        .female {
+            background-color: #fbb;
+        }
+    </style>
+</head>
+<body>
+    <h1>ランダム並べ替えプログラム</h1>
+    <div id="container"></div>
+
+    <script>
+        function generateStudentList() {
+            // 女子の番号リスト
+            const femaleNumbers = ["1:青崎", "3:池田", "5:岩永", "9:片山", "10:瓦吹", "11:北村", "14:小原", "16:柴原", "18:白水", "19:田川", "21:寺井", "22:殿村", "23:永井", "27:濱崎", "35:松尾", "36:松本", "37:向井", "38:森", "39:山口", "42:吉本"];
+            
+            // 男子の番号リスト
+            const maleNumbers = ["4:伊伏","6:浦川","7:岡村","8:小野田","12:熊川","13:後藤","15:坂本","17:下田","24:中村かず","25:中村こう","26:布江","28:林","29:林田","30:平野","31:福島","32:福田","33:福永","34:藤田","40:山田","41:山村"];
+
+            // 女子と男子のリストを作成
+            const femaleStudents = femaleNumbers.map(num => `女 ${num}`);
+            const maleStudents = maleNumbers.map(num => `男 ${num}`);
+
+            // 女子と男子をシャッフル
+            const shuffledFemaleStudents = shuffleArray(femaleStudents);
+            const shuffledMaleStudents = shuffleArray(maleStudents);
+
+            // パターン「男子、男子、女子、女子」を使ってリストを作成
+            let pattern = [];
+            let maleIndex = 0;
+            let femaleIndex = 0;
+
+            while (maleIndex < shuffledMaleStudents.length || femaleIndex < shuffledFemaleStudents.length) {
+                if (maleIndex < shuffledMaleStudents.length) {
+                    pattern.push(shuffledMaleStudents[maleIndex++]);
+                }
+                if (maleIndex < shuffledMaleStudents.length) {
+                    pattern.push(shuffledMaleStudents[maleIndex++]);
+                }
+                if (femaleIndex < shuffledFemaleStudents.length) {
+                    pattern.push(shuffledFemaleStudents[femaleIndex++]);
+                }
+                if (femaleIndex < shuffledFemaleStudents.length) {
+                    pattern.push(shuffledFemaleStudents[femaleIndex++]);
+                }
+            }
+
+            return pattern;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function displayStudents() {
+            const container = document.getElementById('container');
+            const students = generateStudentList();
+
+            students.forEach(student => {
+                const div = document.createElement('div');
+                div.className = 'student ' + (student.startsWith('男') ? 'male' : 'female');
+                div.textContent = student;
+                container.appendChild(div);
+            });
+        }
+
+        displayStudents();
+    </script>
+</body>
+</html>
